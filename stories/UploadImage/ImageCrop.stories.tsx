@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import styled from 'styled-components'
 
-import { ImageCrop } from '../components/UploadImageModal/ImageCrop/ImageCrop'
+import { ImageCrop } from '../../components/UploadImage/ImageCrop/ImageCrop'
 
 const Wrap = styled.div`
   position: absolute;
@@ -14,7 +14,7 @@ const Wrap = styled.div`
   overflow: hidden;
 `
 
-storiesOf('ImageCrop', module).add('default', () => (
+storiesOf('UploadImage/ImageCrop', module).add('default', () => (
   <Wrap>
     <ImageCrop
       image="https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000"

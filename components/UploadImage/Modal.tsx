@@ -3,6 +3,7 @@ import styled, { css, useTheme } from 'styled-components'
 import ReactModal from 'react-modal'
 
 import { pxToRem } from '../../utils/utils'
+import { X } from '../icons/X'
 
 export const MODAL_CLASS = 'modal_open'
 
@@ -22,6 +23,39 @@ export const SReactModal = styled(ReactModal)(
     }
   `,
 )
+
+const XButton = styled.button(
+  ({ theme }) => css`
+    width: ${pxToRem(40)};
+    height: ${pxToRem(40)};
+    background-color: ${theme.color.white};
+    position: absolute;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 0.125rem solid transparent;
+    box-shadow: none;
+    top: ${pxToRem(20)};
+    right: ${pxToRem(20)};
+
+    :focus,
+    :active {
+      outline: none;
+    }
+
+    :focus-visible {
+      border: 0.125rem solid ${theme.color.dark};
+    }
+  `,
+)
+
+const XIcon = styled(X)`
+  width: 0.875rem;
+  height: 0.875rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 
 type Props = {
   style?: CSSStyleSheet
@@ -59,6 +93,9 @@ export const Modal: React.FC<Props> = ({
       className={className}
     >
       {children}
+      <XButton aria-label="Close modal" onClick={onClose}>
+        <XIcon />
+      </XButton>
     </SReactModal>
   )
 }
