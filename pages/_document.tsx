@@ -1,9 +1,9 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 
-type Props = {};
+type Props = {}
 
 class MyDocument extends Document<Props> {
-  static displayName: string = "_document";
+  static displayName: string = '_document'
   render() {
     return (
       <Html lang="en">
@@ -13,8 +13,8 @@ class MyDocument extends Document<Props> {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 
-export default MyDocument;
+export default MyDocument

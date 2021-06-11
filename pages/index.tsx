@@ -1,10 +1,10 @@
-import { NextPage } from "next";
-import React from "react";
+import { NextPage } from 'next'
+import React from 'react'
 
-type Props = {};
+type Props = {}
 
 const Home: NextPage<Props> = ({}) => {
-  return <>Hello</>;
-};
-Home.displayName = "Home";
-export default Home;
+  return <>Hello</>
+}
+Home.displayName = 'Home'
+export default Home

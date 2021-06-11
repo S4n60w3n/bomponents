@@ -29,9 +29,11 @@
     "@types/node": "14.11.2",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
+    "@types/react-modal": "3.12.0",
     "@types/react-select": "4.0.15",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.4",
+    "@types/uuid": "8.3.0",
     "@types/yup": "0.29.8",
     "@typescript-eslint/parser": "4.9.0",
     "autoprefixer": "10.2.5",
@@ -48,15 +50,21 @@
     "postcss": "8.3.0",
     "prettier": "2.2.1",
     "storybook": "6.2.9",
+    "storybook-addon-styled-component-theme": "2.0.0",
     "tailwindcss": "2.1.2",
     "ts-jest": "26.4.4",
     "ts-node": "9.1.0",
     "typescript": "4.1.2"
   },
   "dependencies": {
-    "styled-components": "5.1.1",
     "next": "10.2.0",
+    "rc-slider": "9.7.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-easy-crop": "3.5.1",
+    "react-modal": "3.14.2",
+    "react-sortablejs": "6.0.0",
+    "styled-components": "5.1.1",
+    "uuid": "8.3.2"
   }
 }
