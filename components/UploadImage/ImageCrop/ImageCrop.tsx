@@ -11,6 +11,7 @@ import {
   ROTATE_ANGLE,
 } from './ImageCropUtils'
 import { Rotate } from '../../icons/Rotate'
+import { Throbber } from '../../common/Throbber'
 
 const CropWrap = styled.div`
   position: relative;
@@ -88,7 +89,7 @@ type Props = {
   aspect: number
   image: string
   className?: string
-  onSubmit(blob: Blob): void
+  onSave(blob: Blob): void
 }
 
 export const ImageCrop: React.FC<Props> = ({
@@ -96,9 +97,10 @@ export const ImageCrop: React.FC<Props> = ({
   maxHeight,
   image,
   aspect,
-  onSubmit,
+  onSave,
   className,
 }) => {
+  const [loading, setLoading] = React.useState(false)
   const [zoom, setZoom] = React.useState(1)
   const [rotation, setRotation] = React.useState(0)
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState<Crop>()
@@ -114,6 +116,8 @@ export const ImageCrop: React.FC<Props> = ({
   )
 
   React.useEffect(() => {
+    setRotation(0)
+    setZoom(1)
     setCrop({ x: 0, y: 0 })
   }, [image])
 
@@ -121,6 +125,7 @@ export const ImageCrop: React.FC<Props> = ({
     if (!ref.current || !croppedAreaPixels) {
       throw new Error('Crop data should be present')
     }
+    setLoading(true)
     const data = await getImageData(
       ref.current,
       croppedAreaPixels,
@@ -128,10 +133,11 @@ export const ImageCrop: React.FC<Props> = ({
       maxWidth,
       maxHeight,
     )
+    setLoading(false)
     if (!data) {
       throw new Error('Image crop not successful')
     }
-    onSubmit(data)
+    onSave(data)
   }
 
   const rotateRight = () => {
@@ -162,16 +168,30 @@ export const ImageCrop: React.FC<Props> = ({
         />
       </CropWrap>
       <ControlWrap>
-        <ControlButton aria-label="rotate left" onClick={rotateLeft}>
+        <ControlButton
+          disabled={loading}
+          aria-label="rotate left"
+          onClick={rotateLeft}
+        >
           <Rotate left />
         </ControlButton>
-        <SButton data-testid="imageCropButton" onClick={onCrop} type="submit">
+        <SButton
+          disabled={loading}
+          data-testid="imageCropButton"
+          onClick={onCrop}
+          type="submit"
+        >
           Crop
         </SButton>
-        <ControlButton aria-label="rotate right" onClick={rotateRight}>
+        <ControlButton
+          disabled={loading}
+          aria-label="rotate right"
+          onClick={rotateRight}
+        >
           <Rotate />
         </ControlButton>
       </ControlWrap>
+      {loading && <Throbber centered />}
     </Wrap>
   )
 }

@@ -65,12 +65,11 @@ export const ImageUpload: React.FC<Props> = ({
       <>
         {uploadedData[index] ? (
           <ImageCrop
-            key={index}
             maxWidth={maxWidth}
             maxHeight={maxHeight}
             aspect={aspect}
             image={uploadedData[index]}
-            onSubmit={onCrop}
+            onSave={onCrop}
           />
         ) : (
           <SFileUpload single={single} onUpload={onFileUpload} />
