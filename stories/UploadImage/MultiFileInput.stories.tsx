@@ -14,7 +14,14 @@ storiesOf('UploadImage/MultiFileInput', module).add('default', () => (
     }}
   >
     <Form>
-      <MultiFileInput label="Label" name="name" aspect={3 / 4} />,
+      <MultiFileInput
+        maxWidth={300}
+        maxHeight={400}
+        label="Label"
+        name="name"
+        aspect={3 / 4}
+      />
+      ,
     </Form>
   </Formik>
 ))

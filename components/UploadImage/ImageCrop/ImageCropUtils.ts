@@ -22,19 +22,13 @@ export const getImageData = (
   maxHeight?: number,
 ): Promise<Blob | null> => {
   const canvas = document.createElement('canvas')
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
   const { x = 0, y = 0, width = 0, height = 0 } = crop
   const imageWidth = image.naturalWidth
   const imageHeight = image.naturalHeight
-  const cropWidth = width * scaleX
-  const cropHeight = height * scaleY
-  const cropX = x * scaleX
-  const cropY = y * scaleY
-  const finalWidth = Math.min(cropWidth, maxWidth || cropWidth)
-  const finalHeight = Math.min(cropHeight, maxHeight || cropHeight)
-  const finalWScale = finalWidth / (cropWidth / 100) / 100
-  const finalHScale = finalHeight / (cropHeight / 100) / 100
+  const finalWidth = Math.min(width, maxWidth || width)
+  const finalHeight = Math.min(height, maxHeight || height)
+  const finalWScale = finalWidth / (width / 100) / 100
+  const finalHScale = finalHeight / (height / 100) / 100
   canvas.style['backgroundColor'] = 'white'
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
   ctx.fillStyle = 'black'
@@ -58,16 +52,18 @@ export const getImageData = (
   )
   const data = ctx.getImageData(0, 0, safeArea, safeArea)
 
-  canvas.width = cropWidth
-  canvas.height = cropHeight
+  canvas.width = width
+  canvas.height = height
 
   ctx.putImageData(
     data,
-    Math.round(0 - safeArea / 2 + imageWidth * 0.5 - cropX),
-    Math.round(0 - safeArea / 2 + imageHeight * 0.5 - cropY),
+    Math.round(0 - safeArea / 2 + imageWidth * 0.5 - x),
+    Math.round(0 - safeArea / 2 + imageHeight * 0.5 - y),
   )
 
-  ctx.scale(finalWScale, finalHScale)
+  if (finalWScale !== 1 || finalHScale !== 1) {
+    ctx.scale(finalWScale, finalHScale)
+  }
 
   return new Promise((resolve) => {
     canvas.toBlob(
