@@ -103,6 +103,7 @@ export const ImageCrop: React.FC<Props> = ({
   const [loading, setLoading] = React.useState(false)
   const [zoom, setZoom] = React.useState(1)
   const [rotation, setRotation] = React.useState(0)
+  const initialCroppedArea = React.useRef<Crop | null>()
   const [croppedAreaPixels, setCroppedAreaPixels] = React.useState<Crop>()
 
   const ref = React.useRef<HTMLImageElement | null>(null)
@@ -110,25 +111,30 @@ export const ImageCrop: React.FC<Props> = ({
 
   const onCropComplete = React.useCallback(
     async (_, crop: Crop) => {
+      if (!initialCroppedArea.current) {
+        initialCroppedArea.current = crop
+      }
       setCroppedAreaPixels(crop)
     },
     [image],
   )
 
   React.useEffect(() => {
+    initialCroppedArea.current = null
     setRotation(0)
     setZoom(1)
     setCrop({ x: 0, y: 0 })
   }, [image])
 
   const onCrop = async () => {
-    if (!ref.current || !croppedAreaPixels) {
+    if (!ref.current || !croppedAreaPixels || !initialCroppedArea.current) {
       throw new Error('Crop data should be present')
     }
     setLoading(true)
     const data = await getImageData(
       ref.current,
       croppedAreaPixels,
+      initialCroppedArea.current,
       rotation,
       maxWidth,
       maxHeight,
@@ -157,7 +163,6 @@ export const ImageCrop: React.FC<Props> = ({
           crop={crop}
           zoom={zoom}
           rotation={rotation}
-          onRotationChange={setRotation}
           minZoom={MIN_ZOOM}
           maxZoom={MAX_ZOOM}
           aspect={aspect}

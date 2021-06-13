@@ -17,6 +17,7 @@ export const getRadianAngle = (degreeValue: number) => {
 export const getImageData = (
   image: HTMLImageElement,
   crop: Crop,
+  initialCrop: Crop,
   rotation: number,
   maxWidth?: number,
   maxHeight?: number,
@@ -31,10 +32,8 @@ export const getImageData = (
   const finalHScale = finalHeight / (height / 100) / 100
   canvas.style['backgroundColor'] = 'white'
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  const maxSize = Math.max(imageWidth, imageHeight)
+  const maxSize = Math.max(imageWidth, imageHeight, width, height)
   const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2))
 
   canvas.width = safeArea
@@ -43,6 +42,22 @@ export const getImageData = (
   ctx.translate(safeArea / 2, safeArea / 2)
   ctx.rotate(getRadianAngle(rotation))
   ctx.translate(-safeArea / 2, -safeArea / 2)
+
+  ctx.filter = 'blur(200px)'
+  ctx.drawImage(
+    image,
+    initialCrop.x,
+    initialCrop.y,
+    initialCrop.width,
+    initialCrop.height,
+    0,
+    0,
+    safeArea,
+    safeArea,
+  )
+
+  ctx.filter = 'none'
+
   ctx.drawImage(
     image,
     safeArea / 2 - imageWidth * 0.5,
