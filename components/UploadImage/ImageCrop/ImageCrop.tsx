@@ -9,9 +9,12 @@ import {
   MAX_ZOOM,
   MIN_ZOOM,
   ROTATE_ANGLE,
+  ZOOM_STEP,
 } from './ImageCropUtils'
 import { Rotate } from '../../icons/Rotate'
 import { Throbber } from '../../common/Throbber'
+import { Plus } from '../../icons/Plus'
+import { Minus } from '../../icons/Minus'
 
 const CropWrap = styled.div`
   position: relative;
@@ -37,15 +40,10 @@ const ControlWrap = styled.div`
   bottom: ${pxToRem(20)};
   left: 50%;
   transform: translateX(-50%);
+  max-width: ${pxToRem(320)};
+  width: 100%;
+  justify-content: space-between;
   display: flex;
-
-  > *:first-of-type {
-    margin-right: ${pxToRem(16)};
-  }
-
-  > *:last-of-type {
-    margin-left: ${pxToRem(16)};
-  }
 `
 
 const ControlButton = styled.button(
@@ -63,6 +61,15 @@ const ControlButton = styled.button(
 
     :hover {
       background-color: ${theme.color.light};
+    }
+
+    :disabled {
+      opacity: 0;
+      cursor: initial;
+
+      :hover {
+        background-color: ${theme.color.white};
+      }
     }
   `,
 )
@@ -154,6 +161,14 @@ export const ImageCrop: React.FC<Props> = ({
     setRotation((prev) => prev - ROTATE_ANGLE)
   }
 
+  const zoomOut = () => {
+    setZoom((prev) => Math.max(prev - ZOOM_STEP, MIN_ZOOM))
+  }
+
+  const zoomIn = () => {
+    setZoom((prev) => Math.min(prev + ZOOM_STEP, MAX_ZOOM))
+  }
+
   return (
     <Wrap data-testid="imageCrop" className={className}>
       <CropWrap>
@@ -173,6 +188,13 @@ export const ImageCrop: React.FC<Props> = ({
         />
       </CropWrap>
       <ControlWrap>
+        <ControlButton
+          disabled={loading || zoom <= MIN_ZOOM}
+          aria-label="zoom out"
+          onClick={zoomOut}
+        >
+          <Minus />
+        </ControlButton>
         <ControlButton
           disabled={loading}
           aria-label="rotate left"
@@ -194,6 +216,13 @@ export const ImageCrop: React.FC<Props> = ({
           onClick={rotateRight}
         >
           <Rotate />
+        </ControlButton>
+        <ControlButton
+          disabled={loading || zoom >= MAX_ZOOM}
+          aria-label="zoom out"
+          onClick={zoomIn}
+        >
+          <Plus />
         </ControlButton>
       </ControlWrap>
       {loading && <Throbber centered />}
