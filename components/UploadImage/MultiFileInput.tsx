@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { useField } from 'formik'
+import { v4 as uuidv4 } from 'uuid'
 
 import { pxToRem } from '../../utils/utils'
 import { ImageUploadData } from '../../@types/types'
@@ -116,7 +117,6 @@ export const MultiFileInput: React.FC<Props> = ({
   description,
   className = '',
 }) => {
-  const [loading, setLoading] = React.useState(false)
   const edit = React.useRef<ImageUploadData | null>(null)
   const [modal, setModal] = React.useState<OpenModal>(null)
   const [{ value }, { error, touched }, { setValue }] = useField<
@@ -128,9 +128,9 @@ export const MultiFileInput: React.FC<Props> = ({
   const onSave = React.useCallback(
     (values: ImageUploadData[]) => {
       if (maxAmount) {
-        setImages(value.slice(0, maxAmount))
+        setImages((prev) => [...prev, ...values].slice(0, maxAmount))
       } else {
-        setImages(values)
+        setImages((prev) => [...prev, ...values])
       }
       setModal('preview')
     },
@@ -139,16 +139,18 @@ export const MultiFileInput: React.FC<Props> = ({
 
   const onEditSave = React.useCallback(
     (data: ImageUploadData) => {
-      value.reduce(
-        (res, { key, ...rest }) => [
-          ...res,
-          key === data.key ? data : { key, ...rest },
-        ],
-        [] as ImageUploadData[],
+      setImages((prev) =>
+        prev.reduce(
+          (res, { key, ...rest }) => [
+            ...res,
+            key === data.key ? { ...data, key: uuidv4() } : { key, ...rest },
+          ],
+          [] as ImageUploadData[],
+        ),
       )
       setModal('preview')
     },
-    [value],
+    [setImages, setModal, images],
   )
 
   const onAdd = React.useCallback(() => {
