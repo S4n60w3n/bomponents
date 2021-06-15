@@ -20,6 +20,13 @@ storiesOf('UploadImage/MultiFileInput', module).add('default', () => (
         label="Label"
         name="name"
         aspect={3 / 4}
+        onUpload={() =>
+          new Promise((res) => {
+            setTimeout(() => {
+              res(true)
+            }, 2000)
+          })
+        }
       />
       ,
     </Form>

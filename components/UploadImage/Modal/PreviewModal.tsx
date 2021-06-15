@@ -7,6 +7,10 @@ import { PreviewList } from '../Preview/PreviewList'
 import { ImageUploadData } from '../../../@types/types'
 import { BlueButton, LightButton } from '../../common/Button'
 
+const SModal = styled(Modal)`
+  padding: ${pxToRem(80, 40, 40)};
+`
+
 const ControlWrap = styled.div(
   ({ theme }) => css`
     position: absolute;
@@ -94,7 +98,11 @@ export const PreviewModal: React.FC<Props> = ({
   )
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className={`preview ${className}`}>
+    <SModal
+      isOpen={isOpen}
+      onClose={onClose}
+      className={`preview ${className}`}
+    >
       <PreviewList
         cover={cover}
         onSort={setImages}
@@ -111,7 +119,7 @@ export const PreviewModal: React.FC<Props> = ({
         </SLightButton>
         <SBlueButton onClick={onSave}>Save</SBlueButton>
       </ControlWrap>
-    </Modal>
+    </SModal>
   )
 }
 PreviewModal.displayName = 'PreviewModal'

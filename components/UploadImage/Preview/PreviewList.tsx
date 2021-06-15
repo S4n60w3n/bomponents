@@ -4,7 +4,7 @@ import { ReactSortable } from 'react-sortablejs'
 
 import { Preview } from './Preview'
 import { pxToRem } from '../../../utils/utils'
-import { ImageUploadData } from '../../../@types/types'
+import { ImageUploadData, UploadStatus } from '../../../@types/types'
 
 const Label = styled.div(
   ({ theme }) => css`
@@ -93,7 +93,7 @@ export const PreviewList: React.FC<Props> = ({
         animation={250}
         setList={onSort}
       >
-        {images?.map(({ key, url }, index) => (
+        {images?.map(({ key, url, uploadStatus }, index) => (
           <Preview
             key={key}
             src={url}

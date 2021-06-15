@@ -9,6 +9,13 @@ const Image = styled.img`
   height: auto;
 `
 
+const Warn = styled.div(
+  ({ theme }) => css`
+    color: ${theme.color.orange};
+    font-size: ${pxToRem(16)};
+  `,
+)
+
 const Wrap = styled.div`
   position: relative;
   padding: ${pxToRem(4)};

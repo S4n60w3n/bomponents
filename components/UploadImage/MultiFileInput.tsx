@@ -10,6 +10,7 @@ import { ImageModal } from './Modal/ImageModal'
 import { EditImageModal } from './Modal/EditImageModal'
 import { PreviewList } from './Preview/PreviewList'
 import { PreviewModal } from './Modal/PreviewModal'
+import { UploadModal } from './Modal/UploadModal'
 
 const Wrap = styled.div``
 
@@ -88,7 +89,7 @@ const SPreviewList = styled(PreviewList)`
   }
 `
 
-type OpenModal = 'upload' | 'preview' | 'edit' | null
+type OpenModal = 'crop' | 'preview' | 'edit' | 'upload' | null
 
 type Props = {
   label: string
@@ -97,6 +98,7 @@ type Props = {
   description?: string
   cover?: boolean
   aspect: number
+  onUpload(image: ImageUploadData): Promise<boolean>
   maxWidth?: number
   maxHeight?: number
   className?: string
@@ -105,6 +107,7 @@ type Props = {
 export const MultiFileInput: React.FC<Props> = ({
   label,
   name,
+  onUpload,
   cover,
   maxAmount,
   maxWidth,
@@ -113,23 +116,25 @@ export const MultiFileInput: React.FC<Props> = ({
   description,
   className = '',
 }) => {
+  const [loading, setLoading] = React.useState(false)
   const edit = React.useRef<ImageUploadData | null>(null)
   const [modal, setModal] = React.useState<OpenModal>(null)
   const [{ value }, { error, touched }, { setValue }] = useField<
     ImageUploadData[]
   >(name)
+  const [images, setImages] = React.useState<ImageUploadData[]>(value)
   const errorClass = Boolean(error && touched) ? 'error ' : ''
 
-  const onUpload = React.useCallback(
+  const onSave = React.useCallback(
     (values: ImageUploadData[]) => {
       if (maxAmount) {
-        setValue(value.slice(0, maxAmount))
+        setImages(value.slice(0, maxAmount))
       } else {
-        setValue(values)
+        setImages(values)
       }
       setModal('preview')
     },
-    [setModal, setValue, maxAmount],
+    [setModal, setImages, maxAmount],
   )
 
   const onEditSave = React.useCallback(
@@ -147,12 +152,13 @@ export const MultiFileInput: React.FC<Props> = ({
   )
 
   const onAdd = React.useCallback(() => {
-    setModal('upload')
+    setModal('crop')
   }, [setModal])
 
   const onEdit = React.useCallback(() => {
+    setImages(value)
     setModal('preview')
-  }, [setModal])
+  }, [setModal, setImages, value])
 
   const onEditImage = React.useCallback(
     (data: ImageUploadData) => {
@@ -165,6 +171,22 @@ export const MultiFileInput: React.FC<Props> = ({
   const onClose = React.useCallback(() => {
     setModal(null)
   }, [setModal])
+
+  const onSavePreview = React.useCallback(async () => {
+    setModal('upload')
+  }, [setModal])
+
+  const onUploadSuccess = React.useCallback(
+    async (_images: ImageUploadData[]) => {
+      setValue(_images)
+      setModal(null)
+    },
+    [setModal, setValue],
+  )
+
+  const onUploadFail = React.useCallback(async () => {
+    setModal('preview')
+  }, [setModal, setValue])
 
   return (
     <Wrap className={`${errorClass} ${className}`} data-testid="multiFileInput">
@@ -183,12 +205,12 @@ export const MultiFileInput: React.FC<Props> = ({
         </SBlueButton>
       )}
       <PreviewModal
-        images={value}
+        images={images}
         onClose={onClose}
         amount={maxAmount}
         isOpen={modal === 'preview'}
-        setImages={setValue}
-        onSave={onClose}
+        setImages={setImages}
+        onSave={onSavePreview}
         onEdit={onEditImage}
         onMore={onAdd}
       />
@@ -196,10 +218,18 @@ export const MultiFileInput: React.FC<Props> = ({
         aspect={aspect}
         single={false}
         onClose={onClose}
-        isOpen={modal === 'upload'}
-        onSave={onUpload}
+        isOpen={modal === 'crop'}
+        onSave={onSave}
         maxHeight={maxHeight}
         maxWidth={maxWidth}
+      />
+      <UploadModal
+        isOpen={modal === 'upload'}
+        onSuccess={onUploadSuccess}
+        onClose={onClose}
+        onUpload={onUpload}
+        onFail={onUploadFail}
+        images={images}
       />
       <EditImageModal
         isOpen={modal === 'edit'}
