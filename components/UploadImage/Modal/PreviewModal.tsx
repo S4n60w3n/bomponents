@@ -13,17 +13,11 @@ const SModal = styled(Modal)`
 
 const ControlWrap = styled.div(
   ({ theme }) => css`
-    position: absolute;
-    left: ${pxToRem(60)};
-    bottom: ${pxToRem(60)};
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(100% - ${pxToRem(120)});
-
-    @media only screen and (max-width: ${theme.breakpoint.tabletH}) {
-      margin-top: auto;
-    }
+    margin-top: ${pxToRem(40)};
 
     @media only screen and (max-width: ${theme.breakpoint.tabletV}) {
       flex-direction: column;

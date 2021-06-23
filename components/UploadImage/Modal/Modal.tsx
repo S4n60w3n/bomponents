@@ -15,6 +15,7 @@ export const SReactModal = styled(ReactModal)(
     max-height: ${pxToRem(620)};
     max-width: ${pxToRem(920)};
     margin: auto auto;
+    overflow: auto;
     flex: none;
     background-color: ${theme.color.white};
 
