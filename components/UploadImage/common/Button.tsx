@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import React from 'react'
 
-import { pxToRem } from '../../utils/utils'
+import { pxToRem } from '../../../utils/utils'
 
 export const Button = styled.button(
   ({ theme }) => css`
@@ -66,7 +66,7 @@ export const LightButton = styled(Button)(
     text-align: center;
     padding: ${pxToRem(15, 90)};
 
-    :hover {
+    :hover:not(:disabled) {
       background-color: ${theme.color.gray};
       color: ${theme.color.white};
     }

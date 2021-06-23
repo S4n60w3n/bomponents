@@ -5,7 +5,7 @@ import { pxToRem } from '../../../utils/utils'
 import { Modal } from './Modal'
 import { PreviewList } from '../Preview/PreviewList'
 import { ImageUploadData } from '../../../@types/types'
-import { BlueButton, LightButton } from '../../common/Button'
+import { BlueButton, LightButton } from '../common/Button'
 
 const SModal = styled(Modal)`
   padding: ${pxToRem(80, 40, 40)};
@@ -111,12 +111,16 @@ export const PreviewModal: React.FC<Props> = ({
         images={images}
       />
       <ControlWrap>
-        <SLightButton
-          onClick={onMore}
-          disabled={Boolean(amount && images.length > amount)}
-        >
-          Add More
-        </SLightButton>
+        {!amount || amount !== 1 ? (
+          <SLightButton
+            onClick={onMore}
+            disabled={Boolean(amount && images.length >= amount)}
+          >
+            Add More
+          </SLightButton>
+        ) : (
+          <div />
+        )}
         <SBlueButton onClick={onSave}>Save</SBlueButton>
       </ControlWrap>
     </SModal>

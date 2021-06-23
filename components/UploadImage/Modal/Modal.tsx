@@ -3,7 +3,7 @@ import styled, { css, useTheme } from 'styled-components'
 import ReactModal from 'react-modal'
 
 import { pxToRem } from '../../../utils/utils'
-import { X } from '../../icons/X'
+import { X } from '../icons/X'
 
 export const MODAL_CLASS = 'modal_open'
 

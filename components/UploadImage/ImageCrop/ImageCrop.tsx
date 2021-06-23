@@ -11,10 +11,10 @@ import {
   ROTATE_ANGLE,
   ZOOM_STEP,
 } from './ImageCropUtils'
-import { Rotate } from '../../icons/Rotate'
-import { Throbber } from '../../common/Throbber'
-import { Plus } from '../../icons/Plus'
-import { Minus } from '../../icons/Minus'
+import { Rotate } from '../icons/Rotate'
+import { Throbber } from '../common/Throbber'
+import { Plus } from '../icons/Plus'
+import { Minus } from '../icons/Minus'
 
 const CropWrap = styled.div`
   position: relative;
@@ -38,6 +38,7 @@ const HiddenImage = styled.img`
 const ControlWrap = styled.div`
   position: absolute;
   bottom: ${pxToRem(20)};
+  padding: ${pxToRem(0, 16)};
   left: 50%;
   transform: translateX(-50%);
   max-width: ${pxToRem(320)};

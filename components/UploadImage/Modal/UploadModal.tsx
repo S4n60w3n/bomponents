@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components'
 import { pxToRem } from '../../../utils/utils'
 import { Modal } from './Modal'
 import { ImageUploadData } from '../../../@types/types'
-import { BlueButton, LightButton } from '../../common/Button'
-import { Throbber } from '../../common/Throbber'
+import { BlueButton, LightButton } from '../common/Button'
+import { Throbber } from '../common/Throbber'
 
 const SModal = styled(Modal)`
   padding: ${pxToRem(80, 40, 40)};

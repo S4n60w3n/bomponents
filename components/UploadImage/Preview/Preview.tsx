@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 
 import { pxToRem } from '../../../utils/utils'
-import { ButtonLink } from '../../common/ButtonLink'
+import { ButtonLink } from '../common/ButtonLink'
 
 const Image = styled.img`
   width: 100%;

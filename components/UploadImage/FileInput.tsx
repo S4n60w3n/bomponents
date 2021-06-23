@@ -5,13 +5,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { pxToRem } from '../../utils/utils'
 import { ImageUploadData } from '../../@types/types'
-import { BlueButton, Button } from '../common/Button'
-import { X } from '../icons/X'
+import { BlueButton } from './common/Button'
+import { X } from './icons/X'
 import { ImageModal } from './Modal/ImageModal'
 import { EditImageModal } from './Modal/EditImageModal'
 import { PreviewList } from './Preview/PreviewList'
 import { PreviewModal } from './Modal/PreviewModal'
 import { UploadModal } from './Modal/UploadModal'
+import { AddPhotosButton } from './AddPhotosButton'
 
 const Wrap = styled.div``
 
@@ -88,6 +89,13 @@ const SPreviewList = styled(PreviewList)`
       }
     }
   }
+
+  &.single {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+  }
 `
 
 type OpenModal = 'crop' | 'preview' | 'edit' | 'upload' | null
@@ -105,7 +113,7 @@ type Props = {
   className?: string
 }
 
-export const MultiFileInput: React.FC<Props> = ({
+export const FileInput: React.FC<Props> = ({
   label,
   name,
   onUpload,
@@ -124,6 +132,16 @@ export const MultiFileInput: React.FC<Props> = ({
   >(name)
   const [images, setImages] = React.useState<ImageUploadData[]>(value)
   const errorClass = Boolean(error && touched) ? 'error ' : ''
+
+  const onUpdateImages = React.useCallback(
+    (values: ImageUploadData[]) => {
+      if (values.length === 0) {
+        setModal('crop')
+      }
+      setImages(values)
+    },
+    [setModal, setImages, maxAmount],
+  )
 
   const onSave = React.useCallback(
     (values: ImageUploadData[]) => {
@@ -190,6 +208,8 @@ export const MultiFileInput: React.FC<Props> = ({
     setModal('preview')
   }, [setModal, setValue])
 
+  const singleClass = maxAmount === 1 ? 'single' : ''
+
   return (
     <Wrap className={`${errorClass} ${className}`} data-testid="multiFileInput">
       <SLegend className="label" data-testid="multiInputLegend">
@@ -198,12 +218,12 @@ export const MultiFileInput: React.FC<Props> = ({
       {description && (
         <Description className={'description'}>{description}</Description>
       )}
-      <SPreviewList cover={cover} images={value} />
+      <SPreviewList className={singleClass} cover={cover} images={value} />
       {value.length === 0 ? (
-        <Button onClick={onAdd}>Add</Button>
+        <AddPhotosButton single={maxAmount === 1} onClick={onAdd} />
       ) : (
         <SBlueButton type="button" onClick={onEdit}>
-          EDIT PHOTOS
+          EDIT {maxAmount === 1 ? 'PHOTO' : 'PHOTOS'}
         </SBlueButton>
       )}
       <PreviewModal
@@ -211,14 +231,14 @@ export const MultiFileInput: React.FC<Props> = ({
         onClose={onClose}
         amount={maxAmount}
         isOpen={modal === 'preview'}
-        setImages={setImages}
+        setImages={onUpdateImages}
         onSave={onSavePreview}
         onEdit={onEditImage}
         onMore={onAdd}
       />
       <ImageModal
         aspect={aspect}
-        single={false}
+        single={maxAmount === 1}
         onClose={onClose}
         isOpen={modal === 'crop'}
         onSave={onSave}
@@ -249,4 +269,4 @@ export const MultiFileInput: React.FC<Props> = ({
     </Wrap>
   )
 }
-MultiFileInput.displayName = 'MultiFileInput'
+FileInput.displayName = 'FileInput'
