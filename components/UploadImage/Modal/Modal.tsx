@@ -94,7 +94,7 @@ export const Modal: React.FC<Props> = ({
       className={className}
     >
       {children}
-      <XButton aria-label="Close modal" onClick={onClose}>
+      <XButton aria-label="Close modal" data-testid="modalX" onClick={onClose}>
         <XIcon />
       </XButton>
     </SReactModal>

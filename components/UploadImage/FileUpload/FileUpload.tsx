@@ -109,8 +109,6 @@ export const FileUpload: React.FC<Props> = ({
       setDrag(false)
 
       onUpload(await getUploadData(ev, single))
-
-      setLoading(false)
     },
     [onUpload, setDrag, setLoading, loading, single, getUploadData],
   )
