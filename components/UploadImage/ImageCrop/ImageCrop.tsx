@@ -6,6 +6,7 @@ import { pxToRem } from '../../../utils/utils'
 import {
   Crop,
   getImageData,
+  MAX_IMAGE_SIZE,
   MAX_ZOOM,
   MIN_ZOOM,
   ROTATE_ANGLE,
@@ -34,6 +35,24 @@ const HiddenImage = styled.img`
   position: absolute;
   visibility: hidden;
 `
+
+const ErrorWrap = styled.div(
+  ({ theme }) => css`
+    position: absolute;
+    top: ${pxToRem(20)};
+    padding: ${pxToRem(0, 16)};
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: ${pxToRem(320)};
+    width: 100%;
+    color: ${theme.color.red};
+    text-align: center;
+    font-size: ${pxToRem(16)};
+    background-color: ${theme.color.white};
+    box-shadow: ${theme.boxShadow.default};
+    border-radius: ${theme.radius.super};
+  `,
+)
 
 const ControlWrap = styled.div`
   position: absolute;
@@ -109,6 +128,7 @@ export const ImageCrop: React.FC<Props> = ({
   className,
 }) => {
   const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState('')
   const [zoom, setZoom] = React.useState(1)
   const [rotation, setRotation] = React.useState(0)
   const initialCroppedArea = React.useRef<Crop | null>()
@@ -148,6 +168,12 @@ export const ImageCrop: React.FC<Props> = ({
       maxHeight,
     )
     setLoading(false)
+    if (data?.size && data.size > MAX_IMAGE_SIZE) {
+      setError('Image size is above 10Mb')
+      return
+    } else {
+      setError('')
+    }
     if (!data) {
       throw new Error('Image crop not successful')
     }
@@ -188,6 +214,7 @@ export const ImageCrop: React.FC<Props> = ({
           onZoomChange={setZoom}
         />
       </CropWrap>
+      {error && <ErrorWrap>{error}</ErrorWrap>}
       <ControlWrap>
         <ControlButton
           disabled={loading || zoom <= MIN_ZOOM}

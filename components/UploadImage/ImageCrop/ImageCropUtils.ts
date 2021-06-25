@@ -11,6 +11,8 @@ export const MAX_ZOOM = 3
 export const ROTATE_ANGLE = 90
 export const ZOOM_STEP = 0.1
 
+export const MAX_IMAGE_SIZE = 10485760
+
 export const getRadianAngle = (degreeValue: number) => {
   return (degreeValue * Math.PI) / 180
 }
