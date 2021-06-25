@@ -9,6 +9,9 @@ import { BlueButton, LightButton } from '../common/Button'
 
 const SModal = styled(Modal)`
   padding: ${pxToRem(80, 40, 40)};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 
 const ControlWrap = styled.div(
