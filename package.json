@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "start-storybook -p 6006",
     "start": "http-server storybook-static",
-    "build": "build-storybook",
+    "build": "build-storybook && cp -r public/* ./storybook-static/",
     "test": "jest && npm run tsc && npm run lint",
     "test:watch": "jest --watch",
     "tsc": "tsc",
