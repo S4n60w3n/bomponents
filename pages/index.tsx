@@ -13,14 +13,14 @@ type Props = {}
 
 const Home: NextPage<Props> = ({}) => {
   return (
-    <>
+    <div className="p-4">
       <Header
         fullName={FULL_NAME}
         avatar={PROFILE_IMAGE}
         background={BACKGROUND_IMAGE}
         description={DESCRIPTION}
       />
-    </>
+    </div>
   )
 }
 Home.displayName = 'Home'

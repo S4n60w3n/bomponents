@@ -7,6 +7,7 @@
     "dev": "start-storybook -p 6006",
     "start": "http-server storybook-static",
     "build": "build-storybook && cp -r public/* ./storybook-static/",
+    "build:CV": "next build && next export && node ./scripts/fileCV.js",
     "test": "jest && npm run tsc && npm run lint",
     "test:watch": "jest --watch",
     "tsc": "tsc",

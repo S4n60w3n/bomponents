@@ -1,5 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 
+import { CSS_FILES } from '../utils/constants'
+
 type Props = {}
 
 class MyDocument extends Document<Props> {
@@ -8,6 +10,7 @@ class MyDocument extends Document<Props> {
     return (
       <Html lang="en">
         <Head />
+        <link href={CSS_FILES} rel="stylesheet" />
         <body>
           <Main />
           <NextScript />
